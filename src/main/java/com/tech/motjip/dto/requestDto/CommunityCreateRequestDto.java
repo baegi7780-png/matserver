@@ -1,0 +1,38 @@
+package com.tech.motjip.dto.requestDto;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+public class CommunityCreateRequestDto {
+
+    private String tag;
+
+    private String region;
+
+    private String title;
+
+    private String location;
+
+    private String date;
+
+    private String content;
+
+    public CommunityCreateRequestDto(
+            String tag,
+            String region,
+            String title,
+            String location,
+            String date,
+            String content
+    ) {
+
+        this.tag = tag;
+        this.region = region;
+        this.title = title;
+        this.location = location;
+        this.date = date;
+        this.content = content;
+    }
+}
