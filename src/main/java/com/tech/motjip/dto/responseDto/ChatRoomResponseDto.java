@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,6 +30,11 @@ public class ChatRoomResponseDto {
 
     private String time;
 
+    private List<String> participantProfileImages;
+
+    private String inviteUrl;
+
+
     // DIRECT 상대 이름
     private String opponentNickname;
 
@@ -42,4 +48,18 @@ public class ChatRoomResponseDto {
     public void setLastMessageType(String lastMessageType) {
         this.lastMessageType = lastMessageType;
     }
+
+    public List<String> getParticipantProfileImages() {
+
+        return participantProfileImages;
+    }
+
+    public void setParticipantProfileImages(
+            List<String> participantProfileImages
+    ) {
+
+        this.participantProfileImages =
+                participantProfileImages;
+    }
+
 }

@@ -73,7 +73,9 @@ public class SecurityConfig {
                                 "/oauth/callback/google",
 
                                 "/login/oauth2/code/kakao",
-                                "/login/oauth2/code/google"
+                                "/login/oauth2/code/google",
+
+                                "/chat/invite/**"
 
                         ).permitAll()
 

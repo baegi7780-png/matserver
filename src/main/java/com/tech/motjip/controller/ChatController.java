@@ -247,4 +247,60 @@ public class ChatController {
         return ResponseEntity.ok()
                 .build();
     }
+
+    @GetMapping("/chat/invite/{inviteCode}")
+    @ResponseBody
+    public String invitePage(
+            @PathVariable String inviteCode
+    ) {
+
+        return """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>채팅 초대</title>
+        </head>
+
+        <body style="
+            font-family:sans-serif;
+            text-align:center;
+            margin-top:100px;
+        ">
+
+            <h2>채팅방에 초대되었습니다</h2>
+
+            <button
+                onclick="openApp()"
+                style="
+                    padding:14px 24px;
+                    font-size:18px;
+                    border:none;
+                    border-radius:12px;
+                    background:#FF8A3D;
+                    color:white;
+                    cursor:pointer;
+                ">
+
+                앱에서 열기
+
+            </button>
+
+            <script>
+
+                function openApp() {
+
+                    window.location.href =
+                        "motjip://invite/%s";
+                }
+
+            </script>
+
+        </body>
+
+        </html>
+        """.formatted(inviteCode);
+
+    }
+
 }

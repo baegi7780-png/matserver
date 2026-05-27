@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,8 +50,8 @@ public class ChatMessageService {
     private final ChatService chatService;
     private final FcmService fcmService;
 
-    private static final String CHAT_INVITE_BASE_URL =
-            "https://your-domain.com/chat/invite/";
+    @Value("${app.base-url}")
+    private String baseUrl;
 
     public List<ChatRoomResponseDto> getMyRooms(
             Long memberId
@@ -259,8 +260,53 @@ public class ChatMessageService {
                     dto.setOpponentNickname(
                             opponent.getNickname()
                     );
+
                 }
             }
+
+            List<String> participantProfileImages =
+                    new ArrayList<>();
+
+            for (ChatRoomMember roomMember : allRoomMembers) {
+
+                if (!roomMember.getRoomId()
+                        .equals(room.getRoomId())) {
+
+                    continue;
+                }
+
+                memberRepository.findById(
+                        roomMember.getMemberId()
+                ).ifPresent(member -> {
+
+                    participantProfileImages.add(
+                            member.getProfileImgUrl()
+                    );
+                });
+
+                if (participantProfileImages.size() >= 4) {
+
+                    break;
+                }
+            }
+
+            dto.setParticipantProfileImages(
+                    participantProfileImages
+            );
+
+            if (room.getInviteCode() != null
+                    && !room.getInviteCode()
+                    .trim()
+                    .isEmpty()) {
+
+                dto.setInviteUrl(
+                        baseUrl
+                                + "/chat/invite/"
+                                + room.getInviteCode()
+                );
+            }
+
+
 
             roomList.add(
                     dto
@@ -448,7 +494,8 @@ public class ChatMessageService {
                                 .isEmpty()) {
 
                             room.setInviteUrl(
-                                    CHAT_INVITE_BASE_URL
+                                    baseUrl
+                                            + "/chat/invite/"
                                             + room.getInviteCode()
                             );
                         }
@@ -458,6 +505,9 @@ public class ChatMessageService {
                 }
             }
         }
+
+
+
 
         ChatRoom room =
                 new ChatRoom();
@@ -488,8 +538,9 @@ public class ChatMessageService {
                 );
 
         savedRoom.setInviteUrl(
-                CHAT_INVITE_BASE_URL
-                        + savedRoom.getInviteCode()
+                baseUrl
+                        + "/chat/invite/"
+                        + room.getInviteCode()
         );
 
         for (Long memberId : uniqueMemberIds) {
@@ -1162,7 +1213,8 @@ public class ChatMessageService {
                         );
 
         room.setInviteUrl(
-                CHAT_INVITE_BASE_URL
+                baseUrl
+                        + "/chat/invite/"
                         + room.getInviteCode()
         );
 
