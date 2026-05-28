@@ -62,6 +62,12 @@ public class CommunityController {
             @RequestPart("date")
             String date,
 
+            @RequestPart(
+                    value = "chatLink",
+                    required = false
+            )
+            String chatLink,
+
             @RequestPart("content")
             String content,
 
@@ -95,6 +101,7 @@ public class CommunityController {
                         title,
                         location,
                         date,
+                        chatLink,
                         content
                 );
 
@@ -145,6 +152,12 @@ public class CommunityController {
             @RequestPart("date")
             String date,
 
+            @RequestPart(
+                    value = "chatLink",
+                    required = false
+            )
+            String chatLink,
+
             @RequestPart("content")
             String content,
 
@@ -178,6 +191,7 @@ public class CommunityController {
                         title,
                         location,
                         date,
+                        chatLink,
                         content
                 );
 

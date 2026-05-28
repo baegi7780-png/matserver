@@ -40,5 +40,30 @@ public class CommunityValidator {
                     "내용은 500자 이하만 가능합니다."
             );
         }
+
+        validateChatLink(
+                requestDto.getChatLink()
+        );
+    }
+
+    private void validateChatLink(
+            String chatLink
+    ) {
+
+        if (chatLink == null
+                || chatLink.trim().isEmpty()) {
+
+            return;
+        }
+
+        String trimmedChatLink =
+                chatLink.trim();
+
+        if (trimmedChatLink.length() > 300) {
+
+            throw new IllegalArgumentException(
+                    "채팅 링크는 300자 이하만 가능합니다."
+            );
+        }
     }
 }

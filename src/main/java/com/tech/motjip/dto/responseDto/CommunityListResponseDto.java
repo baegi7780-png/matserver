@@ -25,6 +25,9 @@ public class CommunityListResponseDto {
 
     private String imageUrl;
 
+    // 채팅방 링크
+    private String chatLink;
+
     private String writerNickname;
 
     private String createdAt;
@@ -63,6 +66,11 @@ public class CommunityListResponseDto {
                 )
 
                 .imageUrl(community.getImageUrl())
+
+                // 채팅방 링크 추가
+                .chatLink(
+                        community.getChatLink()
+                )
 
                 .writerNickname(
                         community.getMember().getNickname()
@@ -118,6 +126,11 @@ public class CommunityListResponseDto {
                 )
 
                 .imageUrl(community.getImageUrl())
+
+                // 채팅방 링크 추가
+                .chatLink(
+                        community.getChatLink()
+                )
 
                 .writerNickname(
                         community.getMember().getNickname()
@@ -175,6 +188,11 @@ public class CommunityListResponseDto {
                 )
 
                 .imageUrl(community.getImageUrl())
+
+                // 채팅방 링크 추가
+                .chatLink(
+                        community.getChatLink()
+                )
 
                 .writerNickname(
                         community.getMember().getNickname()

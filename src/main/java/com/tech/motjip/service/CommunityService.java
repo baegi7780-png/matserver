@@ -82,6 +82,13 @@ public class CommunityService {
                         .placeName(requestDto.getLocation())
                         .meetingAt(meetingAt)
                         .imageUrl(imageUrl)
+
+                        // 채팅방 링크
+                        // 선택 입력 가능
+                        .chatLink(
+                                requestDto.getChatLink()
+                        )
+
                         .build();
 
         Community savedCommunity =
@@ -170,6 +177,11 @@ public class CommunityService {
 
         community.setMeetingAt(
                 meetingAt
+        );
+
+        // 채팅방 링크 수정
+        community.setChatLink(
+                requestDto.getChatLink()
         );
 
         if (image != null && !image.isEmpty()) {

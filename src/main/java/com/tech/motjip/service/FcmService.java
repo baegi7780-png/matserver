@@ -38,25 +38,37 @@ public class FcmService {
             String type
     ) {
 
+        if (targetToken == null
+                || targetToken.trim().isEmpty()) {
+
+            System.out.println(
+                    "FCM 전송 생략 : targetToken 없음"
+            );
+
+            return;
+        }
+
         try {
 
             Message.Builder builder =
                     Message.builder()
                             .setToken(
-                                    targetToken
+                                    targetToken.trim()
                             );
 
             builder.putData(
                     "title",
                     title != null
-                            ? title
+                            && !title.trim().isEmpty()
+                            ? title.trim()
                             : "맛집"
             );
 
             builder.putData(
                     "body",
                     body != null
-                            ? body
+                            && !body.trim().isEmpty()
+                            ? body.trim()
                             : "새 알림이 도착했습니다."
             );
 
@@ -64,47 +76,34 @@ public class FcmService {
 
                 builder.putData(
                         "roomId",
-                        String.valueOf(
-                                roomId
-                        )
+                        String.valueOf(roomId)
                 );
             }
 
-            if (roomName != null
-                    && !roomName.trim().isEmpty()) {
+            putDataIfNotEmpty(
+                    builder,
+                    "roomName",
+                    roomName
+            );
 
-                builder.putData(
-                        "roomName",
-                        roomName
-                );
-            }
+            putDataIfNotEmpty(
+                    builder,
+                    "roomType",
+                    roomType
+            );
 
-            if (roomType != null
-                    && !roomType.trim().isEmpty()) {
-
-                builder.putData(
-                        "roomType",
-                        roomType
-                );
-            }
-
-            if (type != null
-                    && !type.trim().isEmpty()) {
-
-                builder.putData(
-                        "type",
-                        type
-                );
-            }
+            putDataIfNotEmpty(
+                    builder,
+                    "type",
+                    type
+            );
 
             Message message =
                     builder.build();
 
             String response =
                     FirebaseMessaging.getInstance()
-                            .send(
-                                    message
-                            );
+                            .send(message);
 
             System.out.println(
                     "FCM data-only 전송 성공 : "
@@ -119,5 +118,26 @@ public class FcmService {
 
             e.printStackTrace();
         }
+    }
+
+    private void putDataIfNotEmpty(
+            Message.Builder builder,
+            String key,
+            String value
+    ) {
+
+        if (builder == null
+                || key == null
+                || key.trim().isEmpty()
+                || value == null
+                || value.trim().isEmpty()) {
+
+            return;
+        }
+
+        builder.putData(
+                key,
+                value.trim()
+        );
     }
 }

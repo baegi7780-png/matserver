@@ -191,4 +191,22 @@ public class NotificationService {
 
         notificationRepository.deleteAll(notifications);
     }
+
+    @Transactional(readOnly = true)
+    public long getUnreadNotificationCount(
+            String email
+    ) {
+
+        Member receiver =
+                memberRepository.findByEmailId(email)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "사용자를 찾을 수 없습니다."
+                                )
+                        );
+
+        return notificationRepository.countByReceiverAndReadFalse(
+                receiver
+        );
+    }
 }

@@ -17,6 +17,10 @@ public class CommunityCreateRequestDto {
 
     private String date;
 
+    // 채팅방 링크
+    // 선택 입력 가능
+    private String chatLink;
+
     private String content;
 
     public CommunityCreateRequestDto(
@@ -25,6 +29,7 @@ public class CommunityCreateRequestDto {
             String title,
             String location,
             String date,
+            String chatLink,
             String content
     ) {
 
@@ -33,6 +38,7 @@ public class CommunityCreateRequestDto {
         this.title = title;
         this.location = location;
         this.date = date;
+        this.chatLink = chatLink;
         this.content = content;
     }
 }
