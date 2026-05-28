@@ -45,7 +45,6 @@ public class ChatRoomMember {
         this.leftAt = null;
         this.lastReadAt = LocalDateTime.now();
     }
-
     public boolean isActiveMember() {
         return Boolean.FALSE.equals(this.isLeft);
     }
