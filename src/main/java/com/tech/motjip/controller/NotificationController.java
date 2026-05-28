@@ -97,4 +97,22 @@ public class NotificationController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/unread-count")
+    public ResponseEntity<Long> getUnreadNotificationCount(
+            Authentication authentication
+    ) {
+
+        String email =
+                authentication.getName();
+
+        long unreadCount =
+                notificationService.getUnreadNotificationCount(
+                        email
+                );
+
+        return ResponseEntity.ok(
+                unreadCount
+        );
+    }
 }

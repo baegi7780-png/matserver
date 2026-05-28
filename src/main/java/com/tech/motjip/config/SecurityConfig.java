@@ -102,7 +102,7 @@ public class SecurityConfig {
 
                                 "/api/v1/member-status/**",
 
-                                "/notifications"
+                                "/notifications/**"
 
                         ).authenticated()
 

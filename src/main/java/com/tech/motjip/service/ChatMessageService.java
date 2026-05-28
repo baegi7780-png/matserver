@@ -1001,7 +1001,8 @@ public class ChatMessageService {
                     );
 
             messagingTemplate.convertAndSend(
-                    "/sub/chat/rooms/update",
+                    "/sub/chat/rooms/update/"
+                            + roomMember.getMemberId(),
                     roomUpdate
             );
         }
@@ -1031,7 +1032,8 @@ public class ChatMessageService {
                     );
 
             messagingTemplate.convertAndSend(
-                    "/sub/chat/rooms/update",
+                    "/sub/chat/rooms/update/"
+                            + roomMember.getMemberId(),
                     roomUpdate
             );
         }
@@ -1366,38 +1368,14 @@ public class ChatMessageService {
                 )
         );
 
-        ChatRoomUpdateDto roomUpdate =
-                new ChatRoomUpdateDto();
+        List<ChatRoomMember> roomMembers =
+                chatRoomMemberRepository.findByRoomIdAndIsLeftFalse(
+                        room.getRoomId()
+                );
 
-        roomUpdate.setRoomId(
-                room.getRoomId()
-        );
-
-        roomUpdate.setLastMessage(
-                systemMessage.getMessageContent()
-        );
-
-        roomUpdate.setLastMessageType(
-                "SYSTEM"
-        );
-
-        if (savedMessage.getSentAt() != null) {
-
-            roomUpdate.setTime(
-                    savedMessage.getSentAt()
-                            .toString()
-            );
-
-        } else {
-
-            roomUpdate.setTime(
-                    ""
-            );
-        }
-
-        messagingTemplate.convertAndSend(
-                "/sub/chat/rooms/update",
-                roomUpdate
+        broadcastRoomUpdatesForMembers(
+                savedMessage,
+                roomMembers
         );
     }
 

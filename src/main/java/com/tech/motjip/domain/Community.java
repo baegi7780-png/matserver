@@ -30,7 +30,8 @@ public class Community {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    // 🚀 [핵심 수정] 기철님의 채팅방 규격에 맞춰 Integer에서 Long으로 변경했습니다!
+    // 🚀 [핵심 수정]
+    // 채팅방 ID
     @Column(name = "room_id")
     private Long roomId;
 
@@ -62,6 +63,11 @@ public class Community {
     @Column(name = "image_url", length = 500)
     private String imageUrl;
 
+    // 채팅방 링크
+    // 선택 입력 가능
+    @Column(name = "chat_link", length = 255)
+    private String chatLink;
+
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
 
@@ -77,7 +83,7 @@ public class Community {
     public Community(
             Integer boardTypeId,
             Member member,
-            Long roomId, // 🚀 생성자 매개변수도 Long으로 변경 완료!
+            Long roomId,
             Tag tag,
             String title,
             String content,
@@ -86,8 +92,10 @@ public class Community {
             Double placeLat,
             Double placeLng,
             LocalDateTime meetingAt,
-            String imageUrl
+            String imageUrl,
+            String chatLink
     ) {
+
         this.boardTypeId = boardTypeId;
         this.member = member;
         this.roomId = roomId;
@@ -100,6 +108,7 @@ public class Community {
         this.placeLng = placeLng;
         this.meetingAt = meetingAt;
         this.imageUrl = imageUrl;
+        this.chatLink = chatLink;
         this.isDeleted = false;
     }
 }
