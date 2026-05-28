@@ -260,7 +260,6 @@ public class ChatMessageService {
                     dto.setOpponentNickname(
                             opponent.getNickname()
                     );
-
                 }
             }
 
@@ -271,6 +270,12 @@ public class ChatMessageService {
 
                 if (!roomMember.getRoomId()
                         .equals(room.getRoomId())) {
+
+                    continue;
+                }
+
+                if (roomMember.getMemberId()
+                        .equals(memberId)) {
 
                     continue;
                 }
@@ -305,8 +310,6 @@ public class ChatMessageService {
                                 + room.getInviteCode()
                 );
             }
-
-
 
             roomList.add(
                     dto
@@ -505,9 +508,6 @@ public class ChatMessageService {
                 }
             }
         }
-
-
-
 
         ChatRoom room =
                 new ChatRoom();
