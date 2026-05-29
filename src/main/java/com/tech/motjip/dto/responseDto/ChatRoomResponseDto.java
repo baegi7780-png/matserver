@@ -20,6 +20,10 @@ public class ChatRoomResponseDto {
 
     private String roomName;
 
+    // true = 사용자가 직접 입력한 제목
+    // false = 참여자 닉네임 기반 동적 제목
+    private boolean customRoomName;
+
     private String roomType;
 
     private String lastMessage;
@@ -34,12 +38,10 @@ public class ChatRoomResponseDto {
 
     private String inviteUrl;
 
-
     // DIRECT 상대 이름
     private String opponentNickname;
 
     private LocalDateTime lastMessageTime;
-
 
     public String getLastMessageType() {
         return lastMessageType;
@@ -61,5 +63,4 @@ public class ChatRoomResponseDto {
         this.participantProfileImages =
                 participantProfileImages;
     }
-
 }

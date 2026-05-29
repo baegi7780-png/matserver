@@ -125,7 +125,7 @@ public class ChatReadService {
                 );
 
                 messagingTemplate.convertAndSend(
-                        "/sub/chat/rooms/update",
+                        "/sub/chat/rooms/update/" + memberId,
                         roomUpdate
                 );
             }

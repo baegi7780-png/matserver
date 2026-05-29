@@ -16,6 +16,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -262,30 +263,11 @@ public class ChatService {
                 savedMessage
         );
 
-        ChatRoomUpdateDto roomUpdate =
-                new ChatRoomUpdateDto();
-
-        roomUpdate.setRoomId(
-                room.getRoomId()
-        );
-
-        roomUpdate.setLastMessage(
-                systemContent
-        );
-
-        roomUpdate.setLastMessageType(
-                "SYSTEM"
-        );
-
-        roomUpdate.setTime(
-                savedMessage.getSentAt()
-                        .toLocalTime()
-                        .toString()
-        );
-
-        messagingTemplate.convertAndSend(
-                "/sub/chat/rooms/update",
-                roomUpdate
+        broadcastRoomUpdateToMembers(
+                room.getRoomId(),
+                systemContent,
+                "SYSTEM",
+                savedMessage
         );
     }
 
@@ -446,30 +428,11 @@ public class ChatService {
                 savedMessage
         );
 
-        ChatRoomUpdateDto roomUpdate =
-                new ChatRoomUpdateDto();
-
-        roomUpdate.setRoomId(
-                room.getRoomId()
-        );
-
-        roomUpdate.setLastMessage(
-                systemContent
-        );
-
-        roomUpdate.setLastMessageType(
-                "SYSTEM"
-        );
-
-        roomUpdate.setTime(
-                savedMessage.getSentAt()
-                        .toLocalTime()
-                        .toString()
-        );
-
-        messagingTemplate.convertAndSend(
-                "/sub/chat/rooms/update",
-                roomUpdate
+        broadcastRoomUpdateToMembers(
+                room.getRoomId(),
+                systemContent,
+                "SYSTEM",
+                savedMessage
         );
 
         String inviterNickname =
@@ -613,33 +576,78 @@ public class ChatService {
                 savedMessage
         );
 
-        ChatRoomUpdateDto roomUpdate =
-                new ChatRoomUpdateDto();
-
-        roomUpdate.setRoomId(
-                room.getRoomId()
-        );
-
-        roomUpdate.setLastMessage(
-                systemContent
-        );
-
-        roomUpdate.setLastMessageType(
-                "SYSTEM"
-        );
-
-        roomUpdate.setTime(
-                savedMessage.getSentAt()
-                        .toLocalTime()
-                        .toString()
-        );
-
-        messagingTemplate.convertAndSend(
-                "/sub/chat/rooms/update",
-                roomUpdate
+        broadcastRoomUpdateToMembers(
+                room.getRoomId(),
+                systemContent,
+                "SYSTEM",
+                savedMessage
         );
     }
 
+    private void broadcastRoomUpdateToMembers(
+            Long roomId,
+            String lastMessage,
+            String lastMessageType,
+            ChatMessage savedMessage
+    ) {
 
+        if (roomId == null) {
 
+            return;
+        }
+
+        List<ChatRoomMember> roomMembers =
+                chatRoomMemberRepository.findByRoomIdAndIsLeftFalse(
+                        roomId
+                );
+
+        for (ChatRoomMember roomMember : roomMembers) {
+
+            if (roomMember == null
+                    || roomMember.getMemberId() == null) {
+
+                continue;
+            }
+
+            ChatRoomUpdateDto roomUpdate =
+                    new ChatRoomUpdateDto();
+
+            roomUpdate.setRoomId(
+                    roomId
+            );
+
+            roomUpdate.setLastMessage(
+                    lastMessage
+            );
+
+            roomUpdate.setLastMessageType(
+                    lastMessageType
+            );
+
+            if (savedMessage != null
+                    && savedMessage.getSentAt() != null) {
+
+                roomUpdate.setTime(
+                        savedMessage.getSentAt()
+                                .toString()
+                );
+
+            } else {
+
+                roomUpdate.setTime(
+                        ""
+                );
+            }
+
+            roomUpdate.setTargetMemberId(
+                    roomMember.getMemberId()
+            );
+
+            messagingTemplate.convertAndSend(
+                    "/sub/chat/rooms/update/"
+                            + roomMember.getMemberId(),
+                    roomUpdate
+            );
+        }
+    }
 }

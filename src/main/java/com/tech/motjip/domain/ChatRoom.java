@@ -23,6 +23,11 @@ public class ChatRoom {
     @Column(name = "room_name")
     private String roomName;
 
+    // true  = 사용자가 직접 입력한 채팅방 이름 영구 유지
+    // false = 참여자 닉네임 기반 동적 제목 사용
+    @Column(name = "custom_room_name", nullable = false)
+    private boolean customRoomName = false;
+
     // DIRECT / GROUP
     @Column(name = "room_type")
     private String roomType;
